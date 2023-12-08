@@ -1,10 +1,20 @@
+import 'package:final_homework/core/controller/image_ctrl.dart';
 import 'package:final_homework/core/controller/size_ctrl.dart';
 import 'package:final_homework/core/controller/text_ctrl.dart';
 import 'package:final_homework/interface/screens/launch/view_model/launch_view_model.dart';
+import 'package:final_homework/source/models/grain_model.dart';
+import 'package:final_homework/source/service/service_grain.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LaunchController extends LaunchViewModel {
+  @override
+  void onInit() async {
+    await initData();
+    await readGrains();
+    super.onInit();
+  }
+
   @override
   startIconOnTap() {
     templateIndex.value = 1;
@@ -62,7 +72,7 @@ class LaunchController extends LaunchViewModel {
       );
 
   get _backButton => Container(
-        width: 10.w,
+        width: 2.w,
         height: 100.h,
         alignment: Alignment.center,
         decoration: const BoxDecoration(color: Colors.orange),
@@ -74,4 +84,42 @@ class LaunchController extends LaunchViewModel {
         title: "Geri Git".write(size: 24, weight: FontWeight.bold),
         leading: Icon(Icons.arrow_back_ios, color: Colors.black, size: 40.w),
       );
+
+  @override
+  Future<void> initData() async {
+    int id = await ServiceGrain.addGrain();
+    debugPrint("ID $id");
+  }
+
+  @override
+  Future<List<GrainModel>> readGrains() async {
+    grains.value = await ServiceGrain.readGrains();
+    for (var value in grains) {
+      debugPrint("heat ${value.heat}");
+    }
+    return grains;
+  }
+
+  @override
+  productTreeOnTap() {
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: Colors.black,
+        title: "Ürün Ağacı".write(color: Colors.white, weight: FontWeight.bold, size: 36),
+        content: _productTreeContent,
+      ),
+    );
+  }
+
+  get _productTreeContent => SizedBox(
+        width: 3.w,
+        height: 3.w,
+        child: Column(children: [Expanded(flex: 7, child: _imageField), const Spacer(flex: 1), Expanded(flex: 1, child: _backButton)]),
+      );
+
+  get _imageField => Row(children: [_imageOne, const Spacer(flex: 1), _imageTwo]);
+
+  get _imageOne => Expanded(flex: 20, child: ImageCtrl.productOne.call(type: ImageType.png));
+
+  get _imageTwo => Expanded(flex: 20, child: ImageCtrl.productTwo.call(type: ImageType.png));
 }

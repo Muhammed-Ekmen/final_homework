@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ImageCtrl { farm, medipol }
+enum ImageCtrl { farm, medipol, productOne, productTwo }
 
 enum ImageType { jpg, png }
 

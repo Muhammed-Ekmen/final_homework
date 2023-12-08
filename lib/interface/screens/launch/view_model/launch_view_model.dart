@@ -1,9 +1,11 @@
+import 'package:final_homework/source/models/grain_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 abstract class LaunchViewModel extends GetxController {
   RxInt templateIndex = RxInt(0);
   RxInt choiceIndex = RxInt(0);
+  RxList<GrainModel> grains = <GrainModel>[].obs;
 
   List<String> farmingSystemTypes = ["Aquaponik sistem", "Aeroponik sistem", "Hidroponik sistem"];
 
@@ -18,4 +20,7 @@ abstract class LaunchViewModel extends GetxController {
   systemSelectionOnTap({required int index});
   grainSelectionOnTap({required int index});
   plateSelectOnTap({required int index});
+  Future<void> initData();
+  Future<List<GrainModel>> readGrains();
+  productTreeOnTap();
 }

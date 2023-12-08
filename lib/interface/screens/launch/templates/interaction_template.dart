@@ -126,11 +126,22 @@ extension _PlateSelect on _InteractionTemplate {
         alignment: Alignment.center,
         decoration: _inCommonBoxDecoration,
         child: index == 2
-            ? const SizedBox.shrink()
+            ? _productTree
             : ListTile(
                 onTap: () => controller.plateSelectOnTap(index: index),
                 leading: Icon(Icons.palette, color: Colors.white, size: 40.w),
                 title: "Tepsi $index".write(color: Colors.white, weight: FontWeight.bold),
               ),
+      );
+
+  get _productTree => Container(
+        width: Get.width,
+        alignment: Alignment.center,
+        decoration: _inCommonBoxDecoration.copyWith(color: Colors.orange),
+        child: ListTile(
+          onTap: controller.productTreeOnTap,
+          title: "Ürün Ağacı".write(size: 24, weight: FontWeight.bold),
+          leading: Icon(Icons.connect_without_contact, size: 40.w, color: Colors.black),
+        ),
       );
 }
