@@ -1,47 +1,49 @@
 part of '../view/launch_view.dart';
 
 class _LaunchMainTemplate extends StatelessWidget {
-  const _LaunchMainTemplate();
+  const _LaunchMainTemplate({required this.controller});
+  final LaunchController controller;
 
   @override
-  Widget build(BuildContext context) => Container(width: 2.w, height: 2.h, padding: 50.allPadding, decoration: _boxDecoration, child: _content);
-
-  get _boxDecoration => BoxDecoration(
-        color: Colors.black.withOpacity(0.85),
-        borderRadius: 43.allRadis,
-        boxShadow: [BoxShadow(color: IColors.shadowBlack.apply, offset: const Offset(5, 5), blurRadius: 12)],
-      );
-}
-
-extension _ContentField on _LaunchMainTemplate {
-  get _content => Column(children: [_schoolIconAndName, _usersAndStartField, _teacherName]);
+  Widget build(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [_schoolName, _usersAndStartField, _teacherName]);
 }
 
 extension _SchoolIconAndName on _LaunchMainTemplate {
-  get _schoolIconAndName => Expanded(flex: 25, child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [_icon, 100.holdW, _name]));
-
-  get _icon => ImageCtrl.medipol.call(type: ImageType.png, h: 25.w, w: 25.w);
-
-  get _name => "ANKARA\nMEDİPOL ÜNİVERSİTESİ".write(color: Colors.white, size: 24, weight: FontWeight.bold);
+  get _schoolName => Expanded(
+        flex: 15,
+        child: "ANKARA\nMEDİPOL ÜNİVERSİTESİ".write(color: Colors.white, size: 24, weight: FontWeight.bold),
+      );
 }
 
 extension _UserAndStartField on _LaunchMainTemplate {
-  get _usersAndStartField => Expanded(flex: 70, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [_titleSubtitleField, _startField]));
+  get _usersAndStartField => Expanded(flex: 70, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [_titleSubtitleField, const Spacer(flex: 5), _startField]));
 
-  get _titleSubtitleField => Expanded(flex: 25, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [_title, _subtitle]));
+  get _titleSubtitleField => Expanded(
+        flex: 25,
+        child: Container(
+          width: Get.width,
+          height: Get.height,
+          alignment: Alignment.centerLeft,
+          decoration: _titleSubtitleBoxDecoration,
+          child: ListTile(leading: ImageCtrl.medipol.call(type: ImageType.png), title: _title, subtitle: _subtitle),
+        ),
+      );
 
-  get _title => "Arpa Yetiştirme Programına Hoşgeldiniz".write(color: Colors.white, size: 20);
+  get _titleSubtitleBoxDecoration => BoxDecoration(
+        color: IColors.shadowBlack.apply,
+        borderRadius: 120.allRadis,
+        boxShadow: const [BoxShadow(color: Colors.black54, offset: Offset(1, 1), blurRadius: 10)],
+      );
 
-  get _subtitle => "Lütfen Menü'den Devam Edin.".write(color: Colors.grey, size: 12);
+  get _title => "Arpa Hasılı Yetiştirme Programına Hoşgeldiniz".toUpperCase().write(color: Colors.white, size: 20, weight: FontWeight.bold);
+
+  get _subtitle => "Lütfen Menü'den Devam Edin.".write(color: Colors.grey, size: 12, weight: FontWeight.bold);
 
   get _startField => Expanded(flex: 75, child: Row(children: List.generate(6, _starterBuilder)));
 
-  Widget _starterBuilder(int index) => Expanded(child: index != 5 ? const StudentCard() : _startIconButton);
+  Widget _starterBuilder(int index) => Expanded(child: index != 5 ? StudentCard(controller: controller, index: index) : _startIconButton);
 
-  get _startIconButton => IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 32),
-      );
+  get _startIconButton => IconButton(onPressed: controller.startIconOnTap, icon: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 32));
 }
 
 extension _TeacherName on _LaunchMainTemplate {

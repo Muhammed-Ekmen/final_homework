@@ -1,12 +1,15 @@
 import 'package:final_homework/core/controller/color_ctrl.dart';
 import 'package:final_homework/core/controller/size_ctrl.dart';
 import 'package:final_homework/core/controller/text_ctrl.dart';
+import 'package:final_homework/interface/screens/launch/controller/launch_controller.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:get/get.dart';
 
 class StudentCard extends StatelessWidget {
-  const StudentCard({super.key});
+  const StudentCard({super.key, required this.controller, required this.index});
+  final LaunchController controller;
+  final int index;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -35,15 +38,12 @@ extension StudentCardContent on StudentCard {
         child: Container(
           width: 20.w,
           height: 20.h,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-          ),
+          decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
         ),
       );
 
   get _studentName => Expanded(
         flex: 4,
-        child: "Muhammed Semih\nEkmen".write(color: Colors.white, textAlign: TextAlign.center, weight: FontWeight.bold),
+        child: controller.studentNames[index].write(color: Colors.white, textAlign: TextAlign.center, weight: FontWeight.bold),
       );
 }

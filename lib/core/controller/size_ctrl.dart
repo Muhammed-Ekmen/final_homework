@@ -9,3 +9,8 @@ extension SizeCtrl on int {
   get allPadding => EdgeInsets.all(Get.width / this);
   get allRadis => BorderRadius.circular(Get.width / this);
 }
+
+extension SizeCtrlDouble on double {
+  double get h => Get.height / this;
+  double get w => Get.width / this;
+}
